@@ -178,13 +178,12 @@ void Poly::multiplyPoly(const Poly& p)
 
 	while (current != NULL)
 	{
+		toBeDeletedDeg[i] = current->deg;
+		toBeDeletedCoeff[i] = current->coeff;
+
 		while (currentP != NULL)
 		{
-			toBeDeletedDeg[i] = current->deg;
-			toBeDeletedCoeff[i] = current->coeff;
-
 			addMono(current->deg + currentP->deg, current->coeff * currentP->coeff);
-
 			currentP = currentP->next;
 		}
 
