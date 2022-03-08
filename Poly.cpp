@@ -116,12 +116,23 @@ void Poly::deleteNode(int deg)
 
 void Poly::addMono(int i, double c)
 {
-	// TODO
+	if (c == 0) return;
+
+	PolyNode *node = new PolyNode(i, c, NULL);
+	addNode(node);
 }
 
 void Poly::addPoly(const Poly& p)
 {
-	// TODO
+	if (p.termsNo == 0) return;
+
+	PolyNode *current = p.head->next;
+
+	while (current != NULL)
+	{
+		addMono(current->deg, current->coeff);
+		current = current->next;
+	}
 }
 
 void Poly::multiplyMono(int i, double c)
@@ -200,4 +211,17 @@ std::string Poly::toString()
 	}
 
 	return result;
+}
+
+int main() {
+	const std::vector<int> deg = { 4, 3, 1, 0 };
+	const std::vector<double> coeff = { 213, 10.32, 23.123, 12.521 };
+	
+	Poly *p = new Poly(deg, coeff);
+	std::cout << p->toString() << std::endl;
+	p->multiplyMono(2, 2);
+	std::cout << p->toString() << std::endl;
+
+	delete p;
+	return 0;
 }
