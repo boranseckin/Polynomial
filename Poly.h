@@ -1,3 +1,9 @@
+/**
+ * @file Poly.h
+ * @author Boran Seckin <seckinb@mcmaster.ca>
+ * @author George Gill <gillg62@mcmaster.ca>
+ */
+
 #ifndef POLY_H_
 #define POLY_H_
 
@@ -12,13 +18,13 @@ private:
 	PolyNode* head = NULL;
 	int termsNo = 0;
 
+	void addNode(PolyNode *node);
+	void deleteNode(int deg);
+
 public:
 	Poly();
 	Poly(const std::vector<int>& deg, const std::vector<double>& coeff);
 	~Poly();
-
-	void addNode(PolyNode *node);
-	void deleteNode(int deg);
 
 	void addMono(int i, double c);
 	void addPoly(const Poly& p);

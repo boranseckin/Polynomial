@@ -1,3 +1,9 @@
+/**
+ * @file Poly.cpp
+ * @author Boran Seckin <seckinb@mcmaster.ca>
+ * @author George Gill <gillg62@mcmaster.ca>
+ */
+
 #include <iostream>
 #include <cmath>
 
@@ -197,7 +203,13 @@ void Poly::multiplyPoly(const Poly& p)
 
 void Poly::duplicate(Poly& outputPoly)
 {
-	// TODO
+	PolyNode *current = head->next;
+
+	while (current != NULL)
+	{
+		outputPoly.addMono(current->deg, current->coeff);
+		current = current->next;
+	}
 }
 
 /**
@@ -262,15 +274,3 @@ std::string Poly::toString()
 
 	return result;
 }
-
-// int main() {
-// 	const std::vector<int> deg = { 4, 3, 1, 0 };
-// 	const std::vector<double> coeff = { 213, 10.32, 23.123, 12.521 };
-	
-// 	Poly *p = new Poly(deg, coeff);
-// 	// std::cout << p->toString() << std::endl;
-// 	p->multiplyMono(2, 2);
-
-// 	delete p;
-// 	return 0;
-// }
