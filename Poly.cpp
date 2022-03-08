@@ -3,17 +3,30 @@
 
 #include "Poly.h"
 
+/**
+ * @brief Construct a new empty Poly object.
+ */
 Poly::Poly()
 {
+	// Create the dummy node
 	head = new PolyNode(-1, 0, NULL);
 }
 
+/**
+ * @brief Construct a new Poly object given a vector of degrees
+ * and a vector of coefficients of same size.
+ * 
+ * @param deg A vector of degrees (non-negative integers)
+ * @param coeff A vector of coefficients
+ */
 Poly::Poly(const std::vector<int>& deg, const std::vector<double>& coeff)
 {
+	// Create the dummy node
 	head = new PolyNode(-1, 0, NULL);
 
 	PolyNode *current = head;
 
+	// For every degree add a new node
 	for (int i = 0; i < deg.size(); i++)
 	{
 		current->next = new PolyNode(deg[i], coeff[i], NULL);
@@ -22,6 +35,9 @@ Poly::Poly(const std::vector<int>& deg, const std::vector<double>& coeff)
 	}
 }
 
+/**
+ * @brief Destroy the Poly object by destroying all PolyNodes.
+ */
 Poly::~Poly()
 {
 	PolyNode *current = head;
@@ -35,18 +51,29 @@ Poly::~Poly()
 	}
 }
 
+/**
+ * @brief Add a new PolyNode to the Poly object. If the degree exists,
+ * the coefficient is added to the existing one. If the resulting coefficient
+ * is zero, the node is deleted.
+ * 
+ * @param node A pointer to the new PolyNode
+ */
 void Poly::addNode(PolyNode *node)
 {
 	PolyNode *current = head;
 
+	// Find the node with the same degree or the first node with a smaller degree
 	while (current->next != NULL && current->next->deg >= node->deg)
 	{
 		current = current->next;
 	}
 
+	// If the node with the same degree exists, add the coefficients
+	// Otherwise, insert a new node
 	if (current->deg == node->deg) {
 		current->coeff += node->coeff;
 
+		// If the resulting coefficient is zero, delete the node
 		if (current->coeff == 0) {
 			deleteNode(current->deg);
 			delete node;
@@ -58,20 +85,28 @@ void Poly::addNode(PolyNode *node)
 	}
 }
 
+/**
+ * @brief Delete the PolyNode with the given degree.
+ * 
+ * @param deg A degree of the PolyNode to be deleted
+ */
 void Poly::deleteNode(int deg)
 {
 	PolyNode *current = head;
 
+	// Find the node with the same degree
 	while (current->next != NULL && current->next->deg != deg)
 	{
 		current = current->next;
 	}
 
+	// If the node with the same degree doesn't exists throw error
 	if (current->next == NULL)
 	{
 		throw std::domain_error("No node with degree " + std::to_string(deg) + " found.");
 	}
 
+	// Delete the node
 	PolyNode *next = current->next->next;
 	delete current->next;
 	current->next = next;
@@ -104,16 +139,32 @@ void Poly::duplicate(Poly& outputPoly)
 	// TODO
 }
 
+/**
+ * @brief Return the degree of the Poly object.
+ * 
+ * @return int The degree of the Poly object
+ */
 int Poly::getDegree()
 {
 	return head->next ? head->next->deg : head->deg;
 }
 
+/**
+ * @brief Return the number of terms in the Poly object.
+ * 
+ * @return int Returns the number of terms in the Poly object
+ */
 int Poly::getTermsNo()
 {
 	return termsNo;
 }
 
+/**
+ * @brief Evaluate the Poly object at the given x.
+ * 
+ * @param x A value to evaluate the Poly object at
+ * @return double The value of the Poly object at x
+ */
 double Poly::evaluate(double x)
 {
 	double result = 0;
@@ -128,6 +179,11 @@ double Poly::evaluate(double x)
 	return result;
 }
 
+/**
+ * @brief Return the string representation of the Poly object.
+ * 
+ * @return std::string The string representation of the Poly object
+ */
 std::string Poly::toString()
 {
 	std::string result = "degree=";
