@@ -136,13 +136,63 @@ void Poly::addPoly(const Poly& p)
 }
 
 void Poly::multiplyMono(int i, double c)
-{
-	// TODO
+{	
+	PolyNode *current = head->next;
+
+	while (current != NULL)
+	{
+		if (c == 0) {
+			deleteNode(current->deg);
+		} else {
+			current->deg += i;
+			current->coeff *= c;
+		}
+
+		current = current->next;
+	}
+
 }
 
 void Poly::multiplyPoly(const Poly& p)
 {
-	// TODO
+	PolyNode *current = head->next;
+	PolyNode *currentP = p.head->next;
+
+	if (p.termsNo == 0 || termsNo == 0) {
+		while (current != NULL) {
+			deleteNode(current->deg);
+			current = current->next;
+		}
+		return;
+	}
+
+	int *toBeDeletedDeg = new int[termsNo];
+	int *toBeDeletedCoeff = new int[termsNo];
+	int i = 0;
+
+	while (current != NULL)
+	{
+		while (currentP != NULL)
+		{
+			toBeDeletedDeg[i] = current->deg;
+			toBeDeletedCoeff[i] = current->coeff;
+
+			addMono(current->deg + currentP->deg, current->coeff * currentP->coeff);
+
+			currentP = currentP->next;
+		}
+
+		current = current->next;
+		currentP = p.head->next;
+		i++;
+	}
+
+	for (int j = 0; j < i; j++) {
+		addMono(toBeDeletedDeg[j], -toBeDeletedCoeff[j]);
+	}
+
+	delete[] toBeDeletedDeg;
+	delete[] toBeDeletedCoeff;
 }
 
 void Poly::duplicate(Poly& outputPoly)
@@ -213,15 +263,14 @@ std::string Poly::toString()
 	return result;
 }
 
-int main() {
-	const std::vector<int> deg = { 4, 3, 1, 0 };
-	const std::vector<double> coeff = { 213, 10.32, 23.123, 12.521 };
+// int main() {
+// 	const std::vector<int> deg = { 4, 3, 1, 0 };
+// 	const std::vector<double> coeff = { 213, 10.32, 23.123, 12.521 };
 	
-	Poly *p = new Poly(deg, coeff);
-	std::cout << p->toString() << std::endl;
-	p->multiplyMono(2, 2);
-	std::cout << p->toString() << std::endl;
+// 	Poly *p = new Poly(deg, coeff);
+// 	// std::cout << p->toString() << std::endl;
+// 	p->multiplyMono(2, 2);
 
-	delete p;
-	return 0;
-}
+// 	delete p;
+// 	return 0;
+// }
