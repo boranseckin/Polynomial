@@ -17,6 +17,9 @@ public:
 	Poly(const std::vector<int>& deg, const std::vector<double>& coeff);
 	~Poly();
 
+	void addNode(PolyNode *node);
+	void deleteNode(int deg);
+
 	void addMono(int i, double c);
 	void addPoly(const Poly& p);
 	void multiplyMono(int i, double c);
