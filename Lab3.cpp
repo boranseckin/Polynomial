@@ -19,10 +19,10 @@ int main()
     tp.testConstructorDefault(totalMark, fullMark);
     tp.testConstructorParameters(totalMark, fullMark);
     tp.testAddMono(totalMark, fullMark);
-    // tp.testAddPoly(totalMark, fullMark);
-    // tp.testMultiplyMono(totalMark, fullMark);
-    // tp.testMultiplyPoly(totalMark, fullMark);
-    // tp.testDuplicate(totalMark, fullMark);
+    tp.testAddPoly(totalMark, fullMark);
+    tp.testMultiplyMono(totalMark, fullMark);
+    tp.testMultiplyPoly(totalMark, fullMark);
+    tp.testDuplicate(totalMark, fullMark);
     tp.testEvaluate(totalMark, fullMark);
 
     cout << "********************************" << endl;
