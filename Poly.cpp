@@ -120,6 +120,12 @@ void Poly::deleteNode(int deg)
 	termsNo--;
 }
 
+/**
+ * @brief Adds a new monomial to this Poly object.
+ * 
+ * @param i Degree of the monomial
+ * @param c Coefficient of the monomial
+ */
 void Poly::addMono(int i, double c)
 {
 	if (c == 0) return;
@@ -128,6 +134,11 @@ void Poly::addMono(int i, double c)
 	addNode(node);
 }
 
+/**
+ * @brief Adds a Poly object to this Poly object.
+ * 
+ * @param p Poly object to be added
+ */
 void Poly::addPoly(const Poly& p)
 {
 	if (p.termsNo == 0) return;
@@ -141,12 +152,19 @@ void Poly::addPoly(const Poly& p)
 	}
 }
 
+/**
+ * @brief Multiplies a monomial with this Poly object.
+ * 
+ * @param i Degree of the monomial
+ * @param c Coefficient of the monomial
+ */
 void Poly::multiplyMono(int i, double c)
 {	
 	PolyNode *current = head->next;
 
 	while (current != NULL)
 	{
+		// If the coefficient of the monomial is zero, delete the node
 		if (c == 0) {
 			deleteNode(current->deg);
 		} else {
@@ -159,11 +177,17 @@ void Poly::multiplyMono(int i, double c)
 
 }
 
+/**
+ * @brief Multiplies a Poly object with this Poly object.
+ * 
+ * @param p Poly object to be multiplied
+ */
 void Poly::multiplyPoly(const Poly& p)
 {
 	PolyNode *current = head->next;
 	PolyNode *currentP = p.head->next;
 
+	// If either of the Poly objects is empty, delete all nodes and return
 	if (p.termsNo == 0 || termsNo == 0) {
 		while (current != NULL) {
 			deleteNode(current->deg);
@@ -172,26 +196,34 @@ void Poly::multiplyPoly(const Poly& p)
 		return;
 	}
 
+	// Keep track of the initial condition of this Poly object
 	int *toBeDeletedDeg = new int[termsNo];
 	int *toBeDeletedCoeff = new int[termsNo];
 	int i = 0;
 
 	while (current != NULL)
 	{
+		// Save the this node's degree and coefficient before multiplying
 		toBeDeletedDeg[i] = current->deg;
 		toBeDeletedCoeff[i] = current->coeff;
 
+		// Multiply the current term with the given Poly object
 		while (currentP != NULL)
 		{
 			addMono(current->deg + currentP->deg, current->coeff * currentP->coeff);
 			currentP = currentP->next;
 		}
 
+		// Proceed to the next term and reset the currentP pointer
 		current = current->next;
 		currentP = p.head->next;
 		i++;
 	}
 
+	/**
+	 * Subtract the initial condition of this Poly object. This way, 
+	 * if a term with the same degree is added during multiplication it will not be deleted.
+	 */
 	for (int j = 0; j < i; j++) {
 		addMono(toBeDeletedDeg[j], -toBeDeletedCoeff[j]);
 	}
@@ -200,6 +232,11 @@ void Poly::multiplyPoly(const Poly& p)
 	delete[] toBeDeletedCoeff;
 }
 
+/**
+ * @brief Duplicates this Poly object.
+ * 
+ * @param outputPoly A pointer to the Poly object to be duplicated
+ */
 void Poly::duplicate(Poly& outputPoly)
 {
 	PolyNode *current = head->next;
