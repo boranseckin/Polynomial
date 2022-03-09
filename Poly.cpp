@@ -82,8 +82,10 @@ void Poly::addNode(PolyNode *node)
 		// If the resulting coefficient is zero, delete the node
 		if (current->coeff == 0) {
 			deleteNode(current->deg);
-			delete node;
 		}
+
+		// This node is not part of the list, delete it
+		delete node;
 	} else {
 		node->next = current->next;
 		current->next = node;
